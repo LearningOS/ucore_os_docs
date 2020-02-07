@@ -1,6 +1,7 @@
 **实现物理内存探测**
 
-物理内存探测是在bootasm.S中实现的，相关代码很短，如下所示：
+物理内存探测是在 bootasm.S 中实现的，相关代码很短，如下所示：
+
 ```x86asm
 probe_memory:
 //对0x8000处的32位单元清零,即给位于0x8000处的
@@ -32,6 +33,7 @@ cont:
                   jnz start_probe
 finish_probe:
 ```
-上述代码正常执行完毕后，在0x8000地址处保存了从BIOS中获得的内存分布信息，此信息按照struct
-e820map的设置来进行填充。这部分信息将在bootloader启动ucore后，由ucore的page\_init函数来根据struct
-e820map的memmap（定义了起始地址为0x8000）来完成对整个机器中的物理内存的总体管理。
+
+上述代码正常执行完毕后，在 0x8000 地址处保存了从 BIOS 中获得的内存分布信息，此信息按照 struct
+e820map 的设置来进行填充。这部分信息将在 bootloader 启动 ucore 后，由 ucore 的 page_init 函数来根据 struct
+e820map 的 memmap（定义了起始地址为 0x8000）来完成对整个机器中的物理内存的总体管理。

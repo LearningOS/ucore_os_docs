@@ -1,24 +1,24 @@
 ##### 使用远程调试
 
-为了与qemu配合进行源代码级别的调试，需要先让qemu进入等待gdb调试器的接入并且还不能让qemu中的CPU执行，因此启动qemu的时候，我们需要使用参数-S –s这两个参数来做到这一点。在使用了前面提到的参数启动qemu之后，qemu中的CPU并不会马上开始执行，这时我们启动gdb，然后在gdb命令行界面下，使用下面的命令连接到qemu：
+为了与 qemu 配合进行源代码级别的调试，需要先让 qemu 进入等待 gdb 调试器的接入并且还不能让 qemu 中的 CPU 执行，因此启动 qemu 的时候，我们需要使用参数-S –s 这两个参数来做到这一点。在使用了前面提到的参数启动 qemu 之后，qemu 中的 CPU 并不会马上开始执行，这时我们启动 gdb，然后在 gdb 命令行界面下，使用下面的命令连接到 qemu：
 
-	(gdb)  target remote 127.0.0.1:1234
+    (gdb)  target remote 127.0.0.1:1234
 
-然后输入c（也就是continue）命令之后，qemu会继续执行下去，但是gdb由于不知道任何符号信息，并且也没有下断点，是不能进行源码级的调试的。为了让gdb获知符号信息，需要指定调试目标文件，gdb中使用file命令：
+然后输入 c（也就是 continue）命令之后，qemu 会继续执行下去，但是 gdb 由于不知道任何符号信息，并且也没有下断点，是不能进行源码级的调试的。为了让 gdb 获知符号信息，需要指定调试目标文件，gdb 中使用 file 命令：
 
-	(gdb)  file ./bin/kernel
+    (gdb)  file ./bin/kernel
 
-之后gdb就会载入这个文件中的符号信息了。
+之后 gdb 就会载入这个文件中的符号信息了。
 
-通过gdb可以对ucore代码进行调试，以lab1中调试memset函数为例：
+通过 gdb 可以对 ucore 代码进行调试，以 lab1 中调试 memset 函数为例：
 
-(1)  运行 `qemu -S -s -hda ./bin/ucore.img -monitor stdio`
+(1) 运行 `qemu -S -s -hda ./bin/ucore.img -monitor stdio`
 
-(2)  运行 gdb并与qemu进行连接
+(2) 运行 gdb 并与 qemu 进行连接
 
-(3)  设置断点并执行
+(3) 设置断点并执行
 
-(4)  qemu 单步调试。
+(4) qemu 单步调试。
 
 运行过程以及结果如下：
 

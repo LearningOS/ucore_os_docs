@@ -1,11 +1,11 @@
-#### 数据结构 
+#### 数据结构
 
 在理解框架之前，需要先了解一下调度器框架所需要的数据结构。
 
-* 通常的操作系统中，进程池是很大的（虽然在 ucore 中，MAX\_PROCESS 很小）。在 ucore 中，调度器引入 run-queue（简称rq,即运行队列）的概念，通过链表结构管理进程。
-* 由于目前 ucore 设计运行在单CPU上，其内部只有一个全局的运行队列，用来管理系统内全部的进程。
-* 运行队列通过链表的形式进行组织。链表的每一个节点是一个list\_entry\_t,每个list\_entry\_t 又对应到了 struct proc\_struct \*,这其间的转换是通过宏 le2proc 来完成 的。具体来说，我们知道在 struct proc\_struct 中有一个叫 run\_link 的 list\_entry\_t，因此可以通过偏移量逆向找到对因某个 run\_list的 struct proc\_struct。即进程结构指针 proc = le2proc(链表节点指针, run\_link)。
-* 为了保证调度器接口的通用性，ucore调度框架定义了如下接口，该接口中，几乎全部成员变量均为函数指针。具体的功能会在后面的框架说明中介绍。
+- 通常的操作系统中，进程池是很大的（虽然在 ucore 中，MAX_PROCESS 很小）。在 ucore 中，调度器引入 run-queue（简称 rq,即运行队列）的概念，通过链表结构管理进程。
+- 由于目前 ucore 设计运行在单 CPU 上，其内部只有一个全局的运行队列，用来管理系统内全部的进程。
+- 运行队列通过链表的形式进行组织。链表的每一个节点是一个 list_entry_t,每个 list_entry_t 又对应到了 struct proc_struct \*,这其间的转换是通过宏 le2proc 来完成 的。具体来说，我们知道在 struct proc_struct 中有一个叫 run_link 的 list_entry_t，因此可以通过偏移量逆向找到对因某个 run_list 的 struct proc_struct。即进程结构指针 proc = le2proc(链表节点指针, run_link)。
+- 为了保证调度器接口的通用性，ucore 调度框架定义了如下接口，该接口中，几乎全部成员变量均为函数指针。具体的功能会在后面的框架说明中介绍。
 
 ```
 1 	struct sched_class {
@@ -24,7 +24,7 @@
 14	};
 ```
 
-* 此外，proc.h 中的 struct proc\_struct 中也记录了一些调度相关的信息：
+- 此外，proc.h 中的 struct proc_struct 中也记录了一些调度相关的信息：
 
 ```
 1	struct proc_struct {
@@ -45,9 +45,9 @@
 16	};
 ```
 
-在此次实验中，你需要了解 default\_sched.c中的实现RR调度算法的函数。在该文件中，你可以看到ucore 已经为 RR 调度算法创建好了一个名为 RR\_sched\_class 的调度策略类。
+在此次实验中，你需要了解 default_sched.c 中的实现 RR 调度算法的函数。在该文件中，你可以看到 ucore 已经为 RR 调度算法创建好了一个名为 RR_sched_class 的调度策略类。
 
-通过数据结构 struct run\_queue 来描述完整的 run\_queue（运行队列）。它的主要结构如下：
+通过数据结构 struct run_queue 来描述完整的 run_queue（运行队列）。它的主要结构如下：
 
 ```
 1	struct run_queue {
@@ -62,4 +62,4 @@
 10	};
 ```
 
-在 ucore 框架中，运行队列存储的是当前可以调度的进程，所以，只有状态为runnable的进程才能够进入运行队列。当前正在运行的进程并不会在运行队列中，这一点需要注意。
+在 ucore 框架中，运行队列存储的是当前可以调度的进程，所以，只有状态为 runnable 的进程才能够进入运行队列。当前正在运行的进程并不会在运行队列中，这一点需要注意。

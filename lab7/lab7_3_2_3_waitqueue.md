@@ -1,11 +1,12 @@
 ## 等待队列
 
-到目前为止，我们的实验中，用户进程或内核线程还没有睡眠的支持机制。在课程中提到用户进程或内核线程可以转入等待状态以等待某个特定事件（比如睡眠,等待子进程结束,等待信号量等），当该事件发生时这些进程能够被再次唤醒。内核实现这一功能的一个底层支撑机制就是等待队列wait_queue，等待队列和每一个事件（睡眠结束、时钟到达、任务完成、资源可用等）联系起来。需要等待事件的进程在转入休眠状态后插入到等待队列中。当事件发生之后，内核遍历相应等待队列，唤醒休眠的用户进程或内核线程，并设置其状态为就绪状态（PROC_RUNNABLE），并将该进程从等待队列中清除。ucore在kern/sync/{ wait.h, wait.c
-}中实现了等待项wait结构和等待队列wait
-queue结构以及相关函数），这是实现ucore中的信号量机制和条件变量机制的基础，进入wait
-queue的进程会被设为等待状态（PROC_SLEEPING），直到他们被唤醒。
+到目前为止，我们的实验中，用户进程或内核线程还没有睡眠的支持机制。在课程中提到用户进程或内核线程可以转入等待状态以等待某个特定事件（比如睡眠,等待子进程结束,等待信号量等），当该事件发生时这些进程能够被再次唤醒。内核实现这一功能的一个底层支撑机制就是等待队列 wait_queue，等待队列和每一个事件（睡眠结束、时钟到达、任务完成、资源可用等）联系起来。需要等待事件的进程在转入休眠状态后插入到等待队列中。当事件发生之后，内核遍历相应等待队列，唤醒休眠的用户进程或内核线程，并设置其状态为就绪状态（PROC_RUNNABLE），并将该进程从等待队列中清除。ucore 在 kern/sync/{ wait.h, wait.c
+}中实现了等待项 wait 结构和等待队列 wait
+queue 结构以及相关函数），这是实现 ucore 中的信号量机制和条件变量机制的基础，进入 wait
+queue 的进程会被设为等待状态（PROC_SLEEPING），直到他们被唤醒。
 
 ###　数据结构定义
+
 ```
 typedef  struct {
     struct proc_struct *proc;     //等待进程的指针
@@ -22,7 +23,7 @@ le2wait(le, member)               //实现wait_t中成员的指针向wait_t 指�
 ```
 
 ###　相关函数说明
-与wait和wait queue相关的函数主要分为两层，底层函数是对wait queue的初始化、插入、删除和查找操作，相关函数如下：
+与 wait 和 wait queue 相关的函数主要分为两层，底层函数是对 wait queue 的初始化、插入、删除和查找操作，相关函数如下：
 
 ```c
 void wait_init(wait_t *wait, struct proc_struct *proc);    //初始化wait结构
@@ -54,7 +55,8 @@ void wakeup_queue(wait_queue_t *queue, uint32_t wakeup_flags, bool del);
 
 ### 调用关系举例
 
-如下图所示，对于唤醒进程的函数`wakeup_wait`，可以看到它会被各种信号量的V操作函数`up`调用，并且它会调用`wait_queue_del`函数和`wakup_proc`函数来完成唤醒进程的操作。
+如下图所示，对于唤醒进程的函数`wakeup_wait`，可以看到它会被各种信号量的 V 操作函数`up`调用，并且它会调用`wait_queue_del`函数和`wakup_proc`函数来完成唤醒进程的操作。
+
 ```dot
 digraph "wakeup_wait" {
   graph [bgcolor="#F7F5F3", fontname="Arial", fontsize="10", label="", rankdir="LR"];
@@ -93,8 +95,7 @@ digraph "wakeup_wait" {
 }
 ```
 
-
-如下图所示，而对于让进程进入等待状态的函数`wait_current_set`，可以看到它会被各种信号量的P操作函数｀down`调用，并且它会调用`wait_init`完成对等待项的初始化，并进一步调用`wait_queue_add`来把与要处于等待状态的进程所关联的等待项挂到与信号量绑定的等待队列中。
+如下图所示，而对于让进程进入等待状态的函数`wait_current_set`，可以看到它会被各种信号量的 P 操作函数｀ down`调用，并且它会调用`wait_init`完成对等待项的初始化，并进一步调用`wait_queue_add`来把与要处于等待状态的进程所关联的等待项挂到与信号量绑定的等待队列中。
 
 ```dot
 digraph "wait_current_set" {

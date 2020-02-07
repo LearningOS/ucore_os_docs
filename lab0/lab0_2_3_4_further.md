@@ -2,8 +2,8 @@
 
 请同学网上搜寻相关资料学习：
 
-gcc tools相关文档
+gcc tools 相关文档
 
-版本管理软件（CVS、SVN、GIT等）的使用
+版本管理软件（CVS、SVN、GIT 等）的使用
 
 …

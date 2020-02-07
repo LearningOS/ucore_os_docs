@@ -1,6 +1,6 @@
 ### 项目组成
 
-表1：实验三文件列表
+表 1：实验三文件列表
 
 ```
 |-- boot
@@ -41,19 +41,19 @@
 
 相对与实验二，实验三主要改动如下：
 
-* kern/mm/default\_pmm.[ch]：实现基于struct pmm\_manager类框架的Fist-Fit物理内存分配参考实现（分配最小单位为页，即4096字节），相关分配页和释放页等实现会间接被kmalloc/kfree等函数使用。
-* kern/mm/pmm.[ch]：pmm.h定义物理内存分配类框架struct pmm\_manager。pmm.c包含了对此物理内存分配类框架的访问，以及与建立、修改、访问页表相关的各种函数实现。在本实验中会用到kmalloc/kfree等函数。
-* libs/list.h：定义了通用双向链表结构以及相关的查找、插入等基本操作，这是建立基于链表方法的物理内存管理（以及其他内核功能）的基础。在lab0文档中有相关描述。其他有类似双向链表需求的内核功能模块可直接使用list.h中定义的函数。在本实验中会多次用到插入，删除等操作函数。
-* kern/driver/ide.[ch]：定义和实现了内存页swap机制所需的磁盘扇区的读写操作支持；在本实验中会涉及通过swapfs\_\*函数间接使用文件中的函数。故了解即可。
-* kern/fs/\*：定义和实现了内存页swap机制所需从磁盘读数据到内存页和写内存数据到磁盘上去的函数 swapfs\_read/swapfs\_write。在本实验中会涉及使用这两个函数。
-* kern/mm/memlayout.h：修改了struct Page，增加了两项pra\_\*成员结构，其中pra\_page\_link可以用来建立描述各个页访问情况（比如根据访问先后）的链表。在本实验中会涉及使用这两个成员结构，以及le2page等宏。
-* kern/mm/vmm.[ch]：vmm.h描述了mm\_struct，vma\_struct等表述可访问的虚存地址访问的一些信息，下面会进一步详细讲解。vmm.c涉及mm,vma结构数据的创建/销毁/查找/插入等函数，这些函数在check\_vma、check\_vmm等中被使用，理解即可。而page
-fault处理相关的do\_pgfault函数是本次实验需要涉及完成的。
-* kern/mm/swap.[ch]：定义了实现页替换算法类框架struct swap\_manager。swap.c包含了对此页替换算法类框架的初始化、页换入/换出等各种函数实现。重点是要理解何时调用swap\_out和swap\_in函数。和如何在此框架下连接具体的页替换算法实现。check\_swap函数以及被此函数调用的\_fifo\_check\_swap函数完成了对本次实验中的练习2：FIFO页替换算法基本正确性的检查，可了解，便于知道为何产生错误。
-* kern/mm/swap\_fifo.[ch]：FIFO页替换算法的基于页替换算法类框架struct swap\_manager的简化实现，主要被swap.c的相关函数调用。重点是\_fifo\_map\_swappable函数（可用于建立页访问属性和关系，比如访问时间的先后顺序）和\_fifo\_swap\_out\_victim函数（可用于实现挑选出要换出的页），当然换出哪个页需要借助于fifo\_map\_swappable函数建立的某种属性关系，已选出合适的页。
-* kern/mm/mmu.h：其中定义了页表项的各种属性位，比如PTE\_P\\PET\_D\\PET\_A等，对于实现扩展实验的clock算法会有帮助。
+- kern/mm/default_pmm.[ch]：实现基于 struct pmm_manager 类框架的 Fist-Fit 物理内存分配参考实现（分配最小单位为页，即 4096 字节），相关分配页和释放页等实现会间接被 kmalloc/kfree 等函数使用。
+- kern/mm/pmm.[ch]：pmm.h 定义物理内存分配类框架 struct pmm_manager。pmm.c 包含了对此物理内存分配类框架的访问，以及与建立、修改、访问页表相关的各种函数实现。在本实验中会用到 kmalloc/kfree 等函数。
+- libs/list.h：定义了通用双向链表结构以及相关的查找、插入等基本操作，这是建立基于链表方法的物理内存管理（以及其他内核功能）的基础。在 lab0 文档中有相关描述。其他有类似双向链表需求的内核功能模块可直接使用 list.h 中定义的函数。在本实验中会多次用到插入，删除等操作函数。
+- kern/driver/ide.[ch]：定义和实现了内存页 swap 机制所需的磁盘扇区的读写操作支持；在本实验中会涉及通过 swapfs\_\*函数间接使用文件中的函数。故了解即可。
+- kern/fs/\*：定义和实现了内存页 swap 机制所需从磁盘读数据到内存页和写内存数据到磁盘上去的函数 swapfs_read/swapfs_write。在本实验中会涉及使用这两个函数。
+- kern/mm/memlayout.h：修改了 struct Page，增加了两项 pra\_\*成员结构，其中 pra_page_link 可以用来建立描述各个页访问情况（比如根据访问先后）的链表。在本实验中会涉及使用这两个成员结构，以及 le2page 等宏。
+- kern/mm/vmm.[ch]：vmm.h 描述了 mm_struct，vma_struct 等表述可访问的虚存地址访问的一些信息，下面会进一步详细讲解。vmm.c 涉及 mm,vma 结构数据的创建/销毁/查找/插入等函数，这些函数在 check_vma、check_vmm 等中被使用，理解即可。而 page
+  fault 处理相关的 do_pgfault 函数是本次实验需要涉及完成的。
+- kern/mm/swap.[ch]：定义了实现页替换算法类框架 struct swap_manager。swap.c 包含了对此页替换算法类框架的初始化、页换入/换出等各种函数实现。重点是要理解何时调用 swap_out 和 swap_in 函数。和如何在此框架下连接具体的页替换算法实现。check_swap 函数以及被此函数调用的\_fifo_check_swap 函数完成了对本次实验中的练习 2：FIFO 页替换算法基本正确性的检查，可了解，便于知道为何产生错误。
+- kern/mm/swap_fifo.[ch]：FIFO 页替换算法的基于页替换算法类框架 struct swap_manager 的简化实现，主要被 swap.c 的相关函数调用。重点是\_fifo_map_swappable 函数（可用于建立页访问属性和关系，比如访问时间的先后顺序）和\_fifo_swap_out_victim 函数（可用于实现挑选出要换出的页），当然换出哪个页需要借助于 fifo_map_swappable 函数建立的某种属性关系，已选出合适的页。
+- kern/mm/mmu.h：其中定义了页表项的各种属性位，比如 PTE_P\\PET_D\\PET_A 等，对于实现扩展实验的 clock 算法会有帮助。
 
-本次实验的主要练习集中在vmm.c中的do\_pgfault函数和swap\_fifo.c中的\_fifo\_map\_swappable函数、\_fifo\_swap\_out\_victim函数。
+本次实验的主要练习集中在 vmm.c 中的 do_pgfault 函数和 swap_fifo.c 中的\_fifo_map_swappable 函数、\_fifo_swap_out_victim 函数。
 
 #### 编译执行
 
@@ -76,19 +76,19 @@ Special kernel symbols:
   edata  0xc011fac8 (phys)
   end    0xc0120cf0 (phys)
 Kernel executable memory footprint: 132KB
-ebp:0xc011ef48 eip:0xc0100a51 args:0x00010094 0x00000000 0xc011ef78 0xc01000b8 
+ebp:0xc011ef48 eip:0xc0100a51 args:0x00010094 0x00000000 0xc011ef78 0xc01000b8
     kern/debug/kdebug.c:308: print_stackframe+21
-ebp:0xc011ef58 eip:0xc0100d4f args:0x00000000 0x00000000 0x00000000 0xc011efc8 
+ebp:0xc011ef58 eip:0xc0100d4f args:0x00000000 0x00000000 0x00000000 0xc011efc8
     kern/debug/kmonitor.c:129: mon_backtrace+10
-ebp:0xc011ef78 eip:0xc01000b8 args:0x00000000 0xc011efa0 0xffff0000 0xc011efa4 
+ebp:0xc011ef78 eip:0xc01000b8 args:0x00000000 0xc011efa0 0xffff0000 0xc011efa4
     kern/init/init.c:56: grade_backtrace2+19
-ebp:0xc011ef98 eip:0xc01000d9 args:0x00000000 0xffff0000 0xc011efc4 0x0000002a 
+ebp:0xc011ef98 eip:0xc01000d9 args:0x00000000 0xffff0000 0xc011efc4 0x0000002a
     kern/init/init.c:61: grade_backtrace1+27
-ebp:0xc011efb8 eip:0xc01000f5 args:0x00000000 0xc010002a 0xffff0000 0xc010006d 
+ebp:0xc011efb8 eip:0xc01000f5 args:0x00000000 0xc010002a 0xffff0000 0xc010006d
     kern/init/init.c:66: grade_backtrace0+19
-ebp:0xc011efd8 eip:0xc0100115 args:0x00000000 0x00000000 0x00000000 0xc0108200 
+ebp:0xc011efd8 eip:0xc0100115 args:0x00000000 0x00000000 0x00000000 0xc0108200
     kern/init/init.c:71: grade_backtrace+26
-ebp:0xc011eff8 eip:0xc010007a args:0x00000000 0x00000000 0x0000ffff 0x40cf9a00 
+ebp:0xc011eff8 eip:0xc010007a args:0x00000000 0x00000000 0x0000ffff 0x40cf9a00
     kern/init/init.c:31: kern_init+79
 memory management: default_pmm_manager
 e820map:

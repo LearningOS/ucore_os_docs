@@ -1,9 +1,9 @@
-## 附录A：实验四的参考输出如下：
+## 附录 A：实验四的参考输出如下：
 
 ```
 make qemu
  (THU.CST) os is loading ...
- 
+
  Special kernel symbols:
  entry 0xc010002c (phys)
  etext 0xc010d0f7 (phys)
@@ -78,7 +78,7 @@ make qemu
  To U: "en.., Bye, Bye. :)"
  kernel panic at kern/process/proc.c:316:
  process exit!!.
- 
+
  Welcome to the kernel debug monitor!!
  Type 'help' for a list of commands.
  K>

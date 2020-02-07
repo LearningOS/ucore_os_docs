@@ -1,6 +1,6 @@
-#### file & dir接口
+#### file & dir 接口
 
-file&dir接口层定义了进程在内核中直接访问的文件相关信息，这定义在file数据结构中，具体描述如下：
+file&dir 接口层定义了进程在内核中直接访问的文件相关信息，这定义在 file 数据结构中，具体描述如下：
 
 ```
 struct file {
@@ -16,7 +16,7 @@ struct file {
 };
 ```
 
-而在kern/process/proc.h中的proc\_struct结构中描述了进程访问文件的数据接口files\_struct，其数据结构定义如下：
+而在 kern/process/proc.h 中的 proc_struct 结构中描述了进程访问文件的数据接口 files_struct，其数据结构定义如下：
 
 ```
 struct files_struct {
@@ -27,4 +27,4 @@ struct files_struct {
 };
 ```
 
-当创建一个进程后，该进程的files\_struct将会被初始化或复制父进程的files\_struct。当用户进程打开一个文件时，将从fd_array数组中取得一个空闲file项，然后会把此file的成员变量node指针指向一个代表此文件的inode的起始地址。
+当创建一个进程后，该进程的 files_struct 将会被初始化或复制父进程的 files_struct。当用户进程打开一个文件时，将从 fd_array 数组中取得一个空闲 file 项，然后会把此 file 的成员变量 node 指针指向一个代表此文件的 inode 的起始地址。

@@ -1,1 +1,1 @@
-### Stride Scheduling 
+### Stride Scheduling

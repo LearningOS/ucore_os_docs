@@ -1,20 +1,26 @@
 {
-   "introduction": {
-        "path": "README.md",
-        "title": "介绍" },
- "plugins": [
-     "-mathjax", "rust-playpen","ga","duoshuo", "quizzes", "-lunr", "-search", "search-pro"
-    ],
+  "introduction": {
+    "path": "README.md",
+    "title": "介绍"
+  },
+  "plugins": [
+    "-mathjax",
+    "-lunr",
+    "-search",
+    "search-pro",
+    "chapter-fold",
+    "code",
+    "github",
+    "localized-footer",
+    "ancre-navigation"
+  ],
 
-    "pluginsConfig": {
-      "rust-playpen":{},
-       "ga": {
-            "token": "UA-39088953-8"
-        },
-        "duoshuo": {
-            "short_name": "mytest",
-            "theme": "default"
-        },
-       "quizees":{}
-   }
+  "pluginsConfig": {
+    "github": {
+      "url": "https://github.com/LearningOS/ucore_os_docs"
+    },
+    "localized-footer": {
+      "filename": "comment.html"
+    }
+  }
 }
