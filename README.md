@@ -1,7 +1,7 @@
 # uCore OS 实验指导书和源码网址 (2019)
 
 - [ucore 实验指导书](https://learningos.github.io/ucore_os_webdocs/)
-- [ucore labs 1-8 源码和参考答案 ](https://github.com/learningos/ucore_lab)
+- [ucore labs 1-8 源码和参考答案 ](https://github.com/learningos/ucore_os_lab)
 - [os tutorial lab](https://github.com/chyyuu/os_tutorial_lab)
 
 # 实验总体流程
