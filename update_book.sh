@@ -1,5 +1,6 @@
 echo "building, it will take about 2 min"
-gitbook build
+# if you firt run this script, you should run 'gitbook install'
+gitbook build 
 cd _book
 rm .gitignore
 rm update_book.sh
