@@ -64,4 +64,4 @@ slub 算法，实现两层架构的高效内存单元分配，第一层是基于
 
 - 参考[linux 的 slub 分配算法/](http://www.ibm.com/developerworks/cn/linux/l-cn-slub/)，在 ucore 中实现 slub 分配算法。要求有比较充分的测试用例说明实现的正确性，需要有设计文档。
 
-> Challenges 是选做，做一个就很好了。完成 Challenge 的同学可单独提交 Challenge。完成得好的同学可获得最终考试成绩的加分。
+> Challenges 是选做，做一个就很好了。完成 Challenge 的同学可单独提交 Challenge。
